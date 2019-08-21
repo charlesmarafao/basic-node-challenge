@@ -5,14 +5,15 @@ const app = express();
 app.use(express.json());
 
 const projects = [{ id: 1, title: "Novo Projeto", tasks: [] }];
+const requests = [];
 
-let requests = 0;
-
-app.use((req, res, next) => {
-  requests++;
-  console.log(`Log - número de requisições: ${requests}`);
+let requestsCount = (req, res, next) => {
+  requests.push(req);
+  console.log(`Log - número de requisições: ${requests.length}`);
   next();
-});
+};
+
+app.use(requestsCount);
 
 function checkProjectExists(req, res, next) {
   const { id } = req.params;
